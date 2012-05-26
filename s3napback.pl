@@ -285,7 +285,7 @@ sub backupDirectory {
         $excludes .= " --exclude $exclude";
     }
 
-    my $datasource     = "tar -f - $excludes -g $difffile -C / -czp $name";
+    my $datasource     = "tar -f - $excludes -g $difffile -C / -cp $name";
     my $bucketfullpath = "$bucket:$name-$cyclenum-$type";
 
     $logger->info("Directory $name -> $bucketfullpath");
@@ -311,7 +311,7 @@ sub backupMysql {
         $name      = $2;
     }
     if ( $name eq "all" ) { $name = "--all-databases"; }
-    my $datasource = "mysqldump --opt $socketopt $name | gzip";
+    my $datasource = "mysqldump --opt $socketopt $name";
 
     if ($socket) {
         $name = "$socket/$name";
@@ -347,7 +347,7 @@ sub backupPostgreSQL {
         $pg_dump_cmd = "pg_dump";
     }
 
-    my $datasource = "$pg_dump_cmd $user_opt $name | gzip";
+    my $datasource = "$pg_dump_cmd $user_opt $name";
 
     my $bucketfullpath = "$bucket:PostgreSQL/$name-$cyclenum";
     $logger->info("PostgreSQL $name -> $bucketfullpath");
@@ -435,7 +435,7 @@ sub backupSubversion {
     my $fromRevision = $lastSavedRevision + 1;
     my $toRevision   = $headRevision;
 
-    my $datasource     = "svnadmin dump -q -r$fromRevision:$toRevision --incremental $name | gzip";
+    my $datasource     = "svnadmin dump -q -r$fromRevision:$toRevision --incremental $name";
     my $bucketfullpath = "$bucket:$name-$cyclenum-$type";
 
     $logger->info("Subversion $name -> $bucketfullpath");
