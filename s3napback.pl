@@ -182,7 +182,7 @@ sub main() {
             $encrypt = "| gpg --batch $keyring -r $recipient -e";
         }
 
-        $send_to_s3     = "java -jar ${curPath}js3tream.jar --debug -z $chunksize -n -f -v -K $s3keyfile -i -b";    # -Xmx128M
+        $send_to_s3     = "java -jar ${curPath}js3tream.jar --debug -z $chunksize -n -v -K $s3keyfile -i -b";    # -Xmx128M
         $delete_from_s3 = "java -jar ${curPath}js3tream.jar -v -K $s3keyfile -d -b";
 
         ###### Check what has already been done
